@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Інструкція користувача "Shadow Boxing Timer"</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .slide {
+            transition: opacity 0.4s ease-in-out;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            padding: 1.5rem 2rem;
+            overflow-y: auto;
+        }
+        @media (min-width: 768px) {
+            .slide {
+                padding: 2rem 3rem;
+            }
+        }
+        .slide-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .screenshot-placeholder {
+            background-color: #2d2d2f;
+            border: 2px dashed #4a4a4f;
+            color: #85858b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            min-height: 400px;
+            width: 100%;
+        }
+        .nav-button {
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .nav-button:hover {
+            transform: scale(1.05);
+        }
+        .nav-button:active {
+            transform: scale(0.98);
+        }
+        .progress-bar-fill {
+            transition: width 0.5s ease-out;
+        }
+        .slide::-webkit-scrollbar {
+            width: 8px;
+        }
+        .slide::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .slide::-webkit-scrollbar-thumb {
+            background-color: rgba(107, 114, 128, 0.5);
+            border-radius: 4px;
+        }
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            color: #fb923c; /* orange-400 */
+        }
+        .slide-title {
+            @apply text-2xl font-bold text-white mb-4;
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-200 flex items-center justify-center min-h-screen p-4 antialiased">
+
+    <div id="presentation-container" class="w-full max-w-4xl h-[700px] max-h-[90vh] bg-[#1c1c1e] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+        <!-- Header with Progress Bar -->
+        <header class="p-4 flex items-center space-x-4 border-b border-gray-700/50">
+            <h1 class="text-lg font-bold text-white">Shadow Boxing Timer: Інструкція</h1>
+            <div class="flex-grow h-2 bg-gray-700/80 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-orange-500 rounded-full progress-bar-fill"></div>
+            </div>
+            <div id="slide-counter" class="text-sm font-medium text-gray-400 w-20 text-right"></div>
+        </header>
+
+        <!-- Slides Container -->
+        <main class="flex-grow overflow-hidden relative">
+            <!-- Slides will be injected here by JS -->
+        </main>
+
+        <!-- Navigation Footer -->
+        <footer class="p-4 flex justify-between items-center border-t border-gray-700/50">
+            <button id="prev-btn" class="nav-button bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                Назад
+            </button>
+            <p id="slide-title-footer" class="text-center text-sm text-gray-400 font-medium"></p>
+            <button id="next-btn" class="nav-button bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-lg">
+                Далі
+            </button>
+        </footer>
+    </div>
+
+    <script>
+        // --- DATA ---
+        const slidesData = [
+            {
+                title: "Ключові Можливості",
+                content: `
+                    <div class="flex flex-col">
+                        <div class="text-center mb-8 md:mb-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-20 w-20 text-orange-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Ласкаво просимо до Shadow Boxing Timer</h2>
+                            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">Ваш надійний партнер у тренуваннях.</p>
+                        </div>
+
+                        <div class="space-y-5 max-w-2xl mx-auto w-full">
+                            <div class="flex items-center space-x-4">
+                                <div class="bg-orange-500/10 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="feature-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                                <div><h3 class="font-semibold text-white">Зручний запуск і зупинка</h3><p class="text-sm text-gray-400">Один дотик до екрана для старту та паузи.</p></div>
+                            </div>
+                             <div class="flex items-center space-x-4">
+                                <div class="bg-orange-500/10 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="feature-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm5 3a1 1 0 00-2 0v4.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L12 11.586V7z" clip-rule="evenodd" /></svg></div>
+                                <div><h3 class="font-semibold text-white">Голосове управління</h3><p class="text-sm text-gray-400">Керуйте таймером, коли руки в рукавичках.</p></div>
+                            </div>
+                             <div class="flex items-center space-x-4">
+                                <div class="bg-orange-500/10 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="feature-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></div>
+                                <div><h3 class="font-semibold text-white">Статистика</h3><p class="text-sm text-gray-400">Аналізуйте свій прогрес за допомогою детальних звітів.</p></div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="bg-orange-500/10 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="feature-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg></div>
+                                <div><h3 class="font-semibold text-white">Кастомізація інтервалів</h3><p class="text-sm text-gray-400">Створюйте унікальні тренувальні програми.</p></div>
+                            </div>
+                             <div class="flex items-center space-x-4">
+                                <div class="bg-orange-500/10 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="feature-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
+                                <div><h3 class="font-semibold text-white">Зручне налаштування профайлів</h3><p class="text-sm text-gray-400">Зберігайте різні тренування та перемикайтесь між ними.</p></div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="bg-orange-500/10 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="feature-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m0 18a9 9 0 009-9m-9 9a9 9 0 00-9-9" /></svg></div>
+                                <div><h3 class="font-semibold text-white">Надійна робота у фоні</h3><p class="text-sm text-gray-400">Таймер не зупиниться, навіть якщо згорнути застосунок.</p></div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="bg-orange-500/10 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="feature-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg></div>
+                                <div><h3 class="font-semibold text-white">Робота під час відеозйомки</h3><p class="text-sm text-gray-400">Записуйте тренування — звуки таймера будуть на відео.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Основний екран",
+                content: `
+                    <div class="flex flex-col gap-6 md:gap-8">
+                        <div class="prose prose-invert max-w-none prose-p:text-gray-300">
+                            <h2 class="slide-title">Простота та Швидкість</h2>
+                            <p>Головний екран створений для миттєвого доступу до таймера. Немає нічого зайвого — лише час та ключові показники.</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Великий дисплей:</strong> Легко читається навіть з відстані.</li>
+                                <li><strong>Інтуїтивне керування:</strong> Просто торкніться дисплея, щоб розпочати або призупинити тренування.</li>
+                            </ul>
+                             <p class="mt-4 text-orange-400/90 font-semibold">Підказка: Колір фону змінюється залежно від поточного стану (робота, відпочинок, пауза).</p>
+                        </div>
+                        <div class="screenshot-placeholder rounded-xl self-center">
+                            <p class="p-4">[Скріншот головного екрана в стані спокою]</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Базове керування",
+                content: `
+                    <div class="flex flex-col gap-6 md:gap-8">
+                        <div class="prose prose-invert max-w-none prose-p:text-gray-300">
+                            <h2 class="slide-title">Кнопки швидкого доступу</h2>
+                            <p>Керуйте тренуванням за допомогою зручних кнопок у верхній частині екрана.</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Start:</strong> Миттєво розпочинає тренування згідно з обраним профілем.</li>
+                                <li><strong>Delay Start:</strong> Розпочинає тренування з короткою затримкою, щоб ви встигли підготуватися.</li>
+                                <li><strong>Classic Timer:</strong> Запускає простий таймер на один інтервал.</li>
+                            </ul>
+                            <p class="mt-4 text-orange-400/90 font-semibold">Підказка: Утримуйте кнопки "Delay" або "Classic Timer", щоб змінити їх тривалість.</p>
+                        </div>
+                        <div class="screenshot-placeholder rounded-xl self-center">
+                            <p class="p-4">[Скріншот головного екрана з акцентом на верхні кнопки]</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Керування тренуванням",
+                content: `
+                    <div class="flex flex-col gap-6 md:gap-8">
+                        <div class="prose prose-invert max-w-none prose-p:text-gray-300">
+                            <h2 class="slide-title">Повний контроль</h2>
+                            <p>Під час активного тренування з'являються додаткові кнопки для повного контролю над процесом.</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Restart:</strong> Перезапускає поточний раунд або інтервал.</li>
+                                <li><strong>Stop:</strong> Зупиняє раунд, зберігаючи ваш прогрес. Ви можете продовжити з того ж місця пізніше.</li>
+                                <li><strong>Reset:</strong> Повністю скидає таймер до початкового стану.</li>
+                            </ul>
+                            <p class="mt-4 text-orange-400/90 font-semibold">Підказка: Утримуйте кнопку "Reset", щоб примусово завершити всю тренувальну сесію та зберегти її в аналітиці.</p>
+                        </div>
+                         <div class="screenshot-placeholder rounded-xl self-center">
+                            <p class="p-4">[Скріншот екрана під час тренування з видимими нижніми кнопками]</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Управління профілями",
+                content: `
+                    <div class="flex flex-col gap-6 md:gap-8">
+                        <div class="prose prose-invert max-w-none prose-p:text-gray-300">
+                            <h2 class="slide-title">Ваші тренування, ваші правила</h2>
+                            <p>Створюйте та налаштовуйте необмежену кількість тренувальних профілів для різних потреб.</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Створення та редагування:</strong> Легко створюйте нові профілі або змінюйте існуючі.</li>
+                                <li><strong>Швидкий вибір:</strong> Оберіть потрібний профіль прямо на головному екрані.</li>
+                            </ul>
+                            <p class="mt-4 text-orange-400/90 font-semibold">Підказка: Зробіть свайп ліворуч від правого краю екрана, щоб відкрити меню профілів.</p>
+                        </div>
+                        <div class="screenshot-placeholder rounded-xl self-center">
+                            <p class="p-4">[Скріншот меню профілів]</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Просунутий редактор",
+                content: `
+                    <div class="flex flex-col gap-6 md:gap-8">
+                        <div class="prose prose-invert max-w-none prose-p:text-gray-300">
+                            <h2 class="slide-title">Створюйте унікальні програми</h2>
+                            <p>Для складних тренувань використовуйте просунутий редактор, що дозволяє створювати довільні послідовності інтервалів.</p>
+                             <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Можливості:</strong> Додавайте, видаляйте та переміщуйте інтервали роботи та відпочинку.</li>
+                            </ul>
+                            <p class="mt-4 text-orange-400/90 font-semibold">Підказка: У меню редагування профілю утримуйте палець на будь-якому полі вводу часу, щоб відкрити редактор.</p>
+                        </div>
+                         <div class="screenshot-placeholder rounded-xl self-center">
+                            <p class="p-4">[Скріншот просунутого редактора інтервалів]</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Керування без рук",
+                content: `
+                    <div class="flex flex-col gap-6 md:gap-8">
+                        <div class="prose prose-invert max-w-none prose-p:text-gray-300">
+                            <h2 class="slide-title">Голосові команди та Siri</h2>
+                            <p>Керуйте таймером, коли ваші руки зайняті або в рукавичках.</p>
+                             <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Голосове керування:</strong> Натисніть іконку мікрофона та використовуйте прості команди.</li>
+                                <li><strong>Інтеграція з Siri:</strong> Скажіть, наприклад, "Start round in Shadow Boxing Timer".</li>
+                            </ul>
+                        </div>
+                        <div class="screenshot-placeholder rounded-xl self-center">
+                            <p class="p-4">[Скріншот головного екрана з іконкою мікрофона та Siri]</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Відстеження будь-де",
+                content: `
+                    <div class="flex flex-col gap-6 md:gap-8">
+                        <div class="prose prose-invert max-w-none prose-p:text-gray-300">
+                            <h2 class="slide-title">Live Activities та Dynamic Island</h2>
+                            <p>Слідкуйте за прогресом, не розблоковуючи телефон.</p>
+                             <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Екран блокування:</strong> Таймер автоматично з'явиться на екрані блокування.</li>
+                                <li><strong>Dynamic Island:</strong> На підтримуваних пристроях ви будете бачити компактну версію таймера.</li>
+                            </ul>
+                        </div>
+                         <div class="flex flex-col gap-4 self-center">
+                             <div class="screenshot-placeholder rounded-xl">
+                                <p class="p-4">[Скріншот екрана блокування з Live Activity]</p>
+                            </div>
+                             <div class="screenshot-placeholder rounded-xl">
+                                <p class="p-4">[Зображення Dynamic Island під час роботи таймера]</p>
+                            </div>
+                         </div>
+                    </div>
+                `
+            },
+            {
+                title: "Аналіз прогресу",
+                content: `
+                    <div class="flex flex-col gap-6 md:gap-8">
+                        <div class="prose prose-invert max-w-none prose-p:text-gray-300">
+                            <h2 class="slide-title">Відстежуйте свої досягнення</h2>
+                            <p>Застосунок автоматично збирає статистику ваших тренувань.</p>
+                             <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Що всередині:</strong> Календар активності, детальні графіки та повна історія тренувань.</li>
+                            </ul>
+                             <p class="mt-4 text-orange-400/90 font-semibold">Підказка: Натисніть на іконку графіка в правому нижньому куті екрана, щоб відкрити аналітику.</p>
+                        </div>
+                        <div class="screenshot-placeholder rounded-xl self-center">
+                            <p class="p-4">[Скріншот екрана аналітики]</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Встановлення (TestFlight)",
+                content: `
+                    <div class="flex flex-col items-center justify-center h-full text-center">
+                        <div class="prose prose-invert max-w-2xl prose-p:text-gray-300">
+                            <h2 class="slide-title">Встановлення бета-версії</h2>
+                            <p>Наразі застосунок доступний через TestFlight — офіційний сервіс Apple для тестування. Процес встановлення складається з двох простих кроків.</p>
+                        </div>
+                        <div class="mt-8 flex flex-col md:flex-row gap-4 w-full max-w-md">
+                            <a href="https://apps.apple.com/ua/app/testflight/id899247664" target="_blank" class="nav-button flex-1 bg-sky-600 hover:bg-sky-500 text-white font-bold py-4 px-6 rounded-lg text-center">
+                                <span class="block text-lg">Крок 1</span>
+                                <span class="block text-sm opacity-80">Встановити TestFlight</span>
+                            </a>
+                            <a href="https://testflight.apple.com/join/QC5ZACGe" target="_blank" class="nav-button flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded-lg text-center">
+                                <span class="block text-lg">Крок 2</span>
+                                <span class="block text-sm opacity-80">Приєднатись до тестування</span>
+                            </a>
+                        </div>
+                        <p class="mt-6 text-sm text-gray-500 max-w-md">Спочатку встановіть застосунок TestFlight, а потім відкрийте посилання, щоб приєднатись до тестування Shadow Boxing Timer.</p>
+                    </div>
+                `
+            }
+        ];
+
+        // --- SCRIPT ---
+        let currentSlide = 0;
+        const mainContainer = document.querySelector('main');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const slideCounter = document.getElementById('slide-counter');
+        const slideTitleFooter = document.getElementById('slide-title-footer');
+
+        // --- SWIPE LOGIC ---
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        mainContainer.addEventListener('touchstart', (e) => {
+            // Записуємо початкову координату дотику
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        mainContainer.addEventListener('touchend', (e) => {
+            // Записуємо кінцеву координату
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50; // Мінімальна дистанція для свайпу в пікселях
+            
+            // Свайп вліво (наступний слайд)
+            if (touchEndX < touchStartX - swipeThreshold) {
+                // Перевіряємо, чи є куди гортати
+                if (currentSlide < slidesData.length - 1) {
+                    goToSlide(currentSlide + 1);
+                }
+            }
+            // Свайп вправо (попередній слайд)
+            if (touchEndX > touchStartX + swipeThreshold) {
+                // Перевіряємо, чи є куди гортати
+                 if (currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+        }
+        // --- END SWIPE LOGIC ---
+
+
+        function renderSlides() {
+            mainContainer.innerHTML = '';
+            slidesData.forEach((slide, index) => {
+                const slideEl = document.createElement('div');
+                slideEl.className = 'slide w-full h-full';
+                if (index !== currentSlide) {
+                    slideEl.classList.add('slide-hidden');
+                }
+                slideEl.innerHTML = slide.content;
+                mainContainer.appendChild(slideEl);
+            });
+        }
+
+        function updateUI() {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.remove('slide-hidden');
+                } else {
+                    slide.classList.add('slide-hidden');
+                }
+            });
+
+            prevBtn.disabled = currentSlide === 0;
+            if (currentSlide === slidesData.length - 1) {
+                nextBtn.textContent = 'Завершити';
+            } else {
+                nextBtn.textContent = 'Далі';
+            }
+
+            const progress = ((currentSlide + 1) / slidesData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            slideCounter.textContent = `Крок ${currentSlide + 1}/${slidesData.length}`;
+            slideTitleFooter.textContent = slidesData[currentSlide].title;
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= slidesData.length) return;
+            currentSlide = index;
+            updateUI();
+        }
+
+        prevBtn.addEventListener('click', () => {
+            goToSlide(currentSlide - 1);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide === slidesData.length - 1) {
+                document.getElementById('presentation-container').innerHTML = `
+                    <div class="w-full h-full flex flex-col items-center justify-center text-center p-8">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-green-400 mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h2 class="text-4xl font-extrabold text-white mb-3">Готово!</h2>
+                        <p class="text-xl text-gray-400">Ви успішно ознайомилися з інструкцією. <br>Вдалих тренувань!</p>
+                    </div>
+                `;
+            } else {
+                goToSlide(currentSlide + 1);
+            }
+        });
+        
+        // Initial setup
+        renderSlides();
+        updateUI();
+    </script>
+</body>
+</html>
+
