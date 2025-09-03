@@ -30,19 +30,6 @@
             opacity: 0;
             pointer-events: none;
         }
-        .screenshot-placeholder {
-            background-color: #2d2d2f;
-            border: 2px dashed #4a4a4f;
-            color: #85858b;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            min-height: 400px;
-            width: 100%;
-        }
         .nav-button {
             transition: background-color 0.2s ease, transform 0.2s ease;
         }
@@ -72,6 +59,9 @@
         }
         .slide-title {
             @apply text-2xl font-bold text-white mb-4;
+        }
+        .tip-text {
+            @apply mt-4 text-orange-400/90 font-semibold;
         }
     </style>
 </head>
@@ -163,11 +153,9 @@
                                 <li><strong>Великий дисплей:</strong> Легко читається навіть з відстані.</li>
                                 <li><strong>Інтуїтивне керування:</strong> Просто торкніться дисплея, щоб розпочати або призупинити тренування.</li>
                             </ul>
-                             <p class="mt-4 text-orange-400/90 font-semibold">Підказка: Колір фону змінюється залежно від поточного стану (робота, відпочинок, пауза).</p>
+                             <p class="tip-text">Підказка: Колір фону змінюється залежно від поточного стану (робота, відпочинок, пауза).</p>
                         </div>
-                        <div class="screenshot-placeholder rounded-xl self-center">
-                            <p class="p-4">[Скріншот головного екрана в стані спокою]</p>
-                        </div>
+                        <img src="main.PNG" alt="Основний екран застосунку" class="rounded-xl object-contain w-full h-full max-h-[400px] self-center">
                     </div>
                 `
             },
@@ -183,11 +171,9 @@
                                 <li><strong>Delay Start:</strong> Розпочинає тренування з короткою затримкою, щоб ви встигли підготуватися.</li>
                                 <li><strong>Classic Timer:</strong> Запускає простий таймер на один інтервал.</li>
                             </ul>
-                            <p class="mt-4 text-orange-400/90 font-semibold">Підказка: Утримуйте кнопки "Delay" або "Classic Timer", щоб змінити їх тривалість.</p>
+                            <p class="tip-text">Підказка: Утримуйте кнопки "Delay" або "Classic Timer", щоб змінити їх тривалість.</p>
                         </div>
-                        <div class="screenshot-placeholder rounded-xl self-center">
-                            <p class="p-4">[Скріншот головного екрана з акцентом на верхні кнопки]</p>
-                        </div>
+                        <img src="upbuttons.PNG" alt="Верхні кнопки керування" class="rounded-xl object-contain w-full h-full max-h-[400px] self-center">
                     </div>
                 `
             },
@@ -203,11 +189,9 @@
                                 <li><strong>Stop:</strong> Зупиняє раунд, зберігаючи ваш прогрес. Ви можете продовжити з того ж місця пізніше.</li>
                                 <li><strong>Reset:</strong> Повністю скидає таймер до початкового стану.</li>
                             </ul>
-                            <p class="mt-4 text-orange-400/90 font-semibold">Підказка: Утримуйте кнопку "Reset", щоб примусово завершити всю тренувальну сесію та зберегти її в аналітиці.</p>
+                            <p class="tip-text">Підказка: Утримуйте кнопку "Reset", щоб примусово завершити всю тренувальну сесію та зберегти її в аналітиці.</p>
                         </div>
-                         <div class="screenshot-placeholder rounded-xl self-center">
-                            <p class="p-4">[Скріншот екрана під час тренування з видимими нижніми кнопками]</p>
-                        </div>
+                         <img src="downbuttons.PNG" alt="Нижні кнопки керування під час тренування" class="rounded-xl object-contain w-full h-full max-h-[400px] self-center">
                     </div>
                 `
             },
@@ -222,11 +206,9 @@
                                 <li><strong>Створення та редагування:</strong> Легко створюйте нові профілі або змінюйте існуючі.</li>
                                 <li><strong>Швидкий вибір:</strong> Оберіть потрібний профіль прямо на головному екрані.</li>
                             </ul>
-                            <p class="mt-4 text-orange-400/90 font-semibold">Підказка: Зробіть свайп ліворуч від правого краю екрана, щоб відкрити меню профілів.</p>
+                            <p class="tip-text">Підказка: Зробіть свайп ліворуч від правого краю екрана, щоб відкрити меню профілів.</p>
                         </div>
-                        <div class="screenshot-placeholder rounded-xl self-center">
-                            <p class="p-4">[Скріншот меню профілів]</p>
-                        </div>
+                        <img src="profiles.PNG" alt="Меню керування профілями" class="rounded-xl object-contain w-full h-full max-h-[400px] self-center">
                     </div>
                 `
             },
@@ -240,11 +222,9 @@
                              <ul class="list-disc list-inside space-y-1">
                                 <li><strong>Можливості:</strong> Додавайте, видаляйте та переміщуйте інтервали роботи та відпочинку.</li>
                             </ul>
-                            <p class="mt-4 text-orange-400/90 font-semibold">Підказка: У меню редагування профілю утримуйте палець на будь-якому полі вводу часу, щоб відкрити редактор.</p>
+                            <p class="tip-text">Підказка: У меню редагування профілю утримуйте палець на будь-якому полі вводу часу, щоб відкрити редактор.</p>
                         </div>
-                         <div class="screenshot-placeholder rounded-xl self-center">
-                            <p class="p-4">[Скріншот просунутого редактора інтервалів]</p>
-                        </div>
+                         <img src="intervals.PNG" alt="Просунутий редактор інтервалів" class="rounded-xl object-contain w-full h-full max-h-[400px] self-center">
                     </div>
                 `
             },
@@ -260,9 +240,7 @@
                                 <li><strong>Інтеграція з Siri:</strong> Скажіть, наприклад, "Start round in Shadow Boxing Timer".</li>
                             </ul>
                         </div>
-                        <div class="screenshot-placeholder rounded-xl self-center">
-                            <p class="p-4">[Скріншот головного екрана з іконкою мікрофона та Siri]</p>
-                        </div>
+                        <img src="mic.PNG" alt="Іконка мікрофона для голосового керування" class="rounded-xl object-contain w-full h-full max-h-[400px] self-center">
                     </div>
                 `
             },
@@ -279,12 +257,8 @@
                             </ul>
                         </div>
                          <div class="flex flex-col gap-4 self-center">
-                             <div class="screenshot-placeholder rounded-xl">
-                                <p class="p-4">[Скріншот екрана блокування з Live Activity]</p>
-                            </div>
-                             <div class="screenshot-placeholder rounded-xl">
-                                <p class="p-4">[Зображення Dynamic Island під час роботи таймера]</p>
-                            </div>
+                            <img src="live.PNG" alt="Live Activity на екрані блокування" class="rounded-xl object-contain w-full h-full max-h-[400px] self-center">
+                            <img src="dyni.PNG" alt="Таймер у Dynamic Island" class="rounded-xl object-contain w-full h-full max-h-[400px] self-center">
                          </div>
                     </div>
                 `
@@ -299,11 +273,9 @@
                              <ul class="list-disc list-inside space-y-1">
                                 <li><strong>Що всередині:</strong> Календар активності, детальні графіки та повна історія тренувань.</li>
                             </ul>
-                             <p class="mt-4 text-orange-400/90 font-semibold">Підказка: Натисніть на іконку графіка в правому нижньому куті екрана, щоб відкрити аналітику.</p>
+                             <p class="tip-text">Підказка: Натисніть на іконку графіка в правому нижньому куті екрана, щоб відкрити аналітику.</p>
                         </div>
-                        <div class="screenshot-placeholder rounded-xl self-center">
-                            <p class="p-4">[Скріншот екрана аналітики]</p>
-                        </div>
+                        <img src="statistic.PNG" alt="Екран статистики та аналітики" class="rounded-xl object-contain w-full h-full max-h-[400px] self-center">
                     </div>
                 `
             },
@@ -345,29 +317,22 @@
         let touchEndX = 0;
 
         mainContainer.addEventListener('touchstart', (e) => {
-            // Записуємо початкову координату дотику
             touchStartX = e.changedTouches[0].screenX;
         }, { passive: true });
 
         mainContainer.addEventListener('touchend', (e) => {
-            // Записуємо кінцеву координату
             touchEndX = e.changedTouches[0].screenX;
             handleSwipe();
         });
 
         function handleSwipe() {
-            const swipeThreshold = 50; // Мінімальна дистанція для свайпу в пікселях
-            
-            // Свайп вліво (наступний слайд)
+            const swipeThreshold = 50;
             if (touchEndX < touchStartX - swipeThreshold) {
-                // Перевіряємо, чи є куди гортати
                 if (currentSlide < slidesData.length - 1) {
                     goToSlide(currentSlide + 1);
                 }
             }
-            // Свайп вправо (попередній слайд)
             if (touchEndX > touchStartX + swipeThreshold) {
-                // Перевіряємо, чи є куди гортати
                  if (currentSlide > 0) {
                     goToSlide(currentSlide - 1);
                 }
